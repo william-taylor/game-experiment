@@ -1,79 +1,23 @@
-#include <SDL.h>
-#include <GL/glew.h>
 
-bool process_window_events()
-{
-    SDL_Event event;
-    while(SDL_PollEvent(&event))
-    {
-        if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE)
-        {
-            SDL_Log("Shutting down...");
-            return true;
-        }
-    }
+#include "core/Game.h"
 
-    return false;
-}
+const bool HELP_ENABLED = true;
+const char VERSION[] = "0.1";
+const char USAGE[] = R"(glm
+    Usage:
+        basic_game --manifest=<path>
+        basic_game --version
+        basic_game --help
 
-bool initialise_opengl(SDL_Window *window)
-{
-    SDL_GLContext context = SDL_GL_CreateContext(window);
-
-    if (context == nullptr)
-    {
-        SDL_Log("Failed to create GL context in SDL");
-        return true;
-    }
-
-    GLenum error = glewInit();
-
-    if (error != GLEW_OK)
-    {
-        SDL_Log("Failed to initialise GLEW() %s", error);
-        return true;
-    }
-
-    return false;
-}
-
-void render_scene()
-{
-    glClearColor(0.0f, 0.0f, 0.0f,0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-
-void start_game_loop(SDL_Window* window)
-{
-    bool shutdown = false;
-
-    while(!shutdown)
-    {
-        if (process_window_events())
-        {
-            shutdown = true;
-        }
-
-        render_scene();
-
-        SDL_GL_SwapWindow(window);
-    }
-}
+    Options:
+        --manifest=<path>
+        --version
+        --help
+)";
 
 int main(int argc, char* argv[])
 {
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window *window = SDL_CreateWindow("Title", 100, 100, 720, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-
-    if (initialise_opengl(window))
-    {
-        SDL_Log("Failed to initialise opengl");
-        return 1;
-    }
-
-    start_game_loop(window);
-
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-    return 0;
+    auto arguments = docopt::docopt(USAGE, { argv + 1, argv + argc }, HELP_ENABLED, VERSION);
+    start_game(arguments["--manifest"].asString());
+    return EXIT_SUCCESS;
 }
