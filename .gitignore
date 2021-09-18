@@ -1,8 +1,10 @@
 
-### C++ ###
 
-# Temp build folder
+# Custom Folders
 build
+docs/_site
+
+### C++ ###
 
 # Prerequisites
 *.d

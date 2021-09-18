@@ -1,5 +1,5 @@
 
-# Game Experiment
+## Building Demos
 
 ```
 # Install dependencies
@@ -16,4 +16,17 @@ cmake --build . --target ALL_BUILD --config Debug
 
 # Install
 cmake --build . --target install --config Debug
+```
+
+## Building Docs
+
+```
+# Goto docs
+cd docs
+
+# Install Ruby dependencies
+bundle install
+
+# Serve static files
+bundle exec jekyll serve
 ```
