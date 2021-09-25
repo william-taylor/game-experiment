@@ -4,6 +4,6 @@ project(window)
 
 add_executable(window main.cpp)
 
-target_link_libraries(window ${CONAN_LIBS})
+target_link_libraries(window common)
 
 install(TARGETS window RUNTIME DESTINATION bin)
