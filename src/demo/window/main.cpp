@@ -1,24 +1,49 @@
 
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#include <OpenGL/glext.h>
-#else
 #include <GL/glew.h>
-#endif
-
 #include <GLFW/glfw3.h>
+#include <iostream>
 
-int main(int argc, char* argv[])
+const auto OPENGL_VERSION_MAJOR = 4;
+const auto OPENGL_VERSION_MINOR = 0;
+
+int main(int argc, const char* argv[])
 {
-    glfwInit();
+    const auto glfwInitStatus = glfwInit();
 
-#ifndef __APPLE__
-    glewInit();
-#endif
+    if (!glfwInitStatus)
+    {
+        std::cout << "GLFW failed to initialise: " << glfwInitStatus << std::endl;
+        return EXIT_FAILURE;
+    }
 
-    auto window = glfwCreateWindow(720, 480, "Title", nullptr, nullptr);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_VERSION_MAJOR);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, OPENGL_VERSION_MINOR);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    const auto window = glfwCreateWindow(720, 480, "Window Title", nullptr, nullptr);
+
+    if (window == nullptr)
+    {
+        std::cout << "Failed to create window with OpenGL context" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    const auto glewInitStatus = glewInit();
+
+    if (!glewInitStatus)
+    {
+        std::cout << "GLEW failed to initialise: " << std::endl;
+        return EXIT_FAILURE;
+    }
 
     glfwMakeContextCurrent(window);
+
+    const auto renderer = glGetString (GL_RENDERER);
+    const auto version = glGetString (GL_VERSION);
+
+    std::cout << "OpenGL renderer: " << renderer << std::endl;
+    std::cout << "OpenGL version: " << version << std::endl;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -30,4 +55,5 @@ int main(int argc, char* argv[])
     }
 
     glfwTerminate();
+    return EXIT_SUCCESS;
 }
