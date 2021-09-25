@@ -6,12 +6,8 @@
 
 class GLFWwindow;
 
-/*! @brief Container struct for all parameters required for the Demo constructor
- *
- * Uses spdlog under the hood, but might explore other loggers
- * as a later date, so this simple facade helps bring all logging
- * into one class so the under lying implementation can be swapped
- * out easier in future if needed.
+/*!
+ * @brief Data class params required for the demo class
  */
 struct DemoParams
 {
@@ -22,12 +18,8 @@ struct DemoParams
     std::function<void()> render;
 };
 
-/*! @brief Logging facade for future proofing
- *
- * Uses spdlog under the hood, but might explore other loggers
- * as a later date, so this simple facade helps bring all logging
- * into one class so the under lying implementation can be swapped
- * out easier in future if needed.
+/*!
+ * @brief Bootstraps an OpenGL environment for a demo
  */
 class Demo
 {
