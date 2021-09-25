@@ -3,6 +3,7 @@
 # Custom Folders
 build
 docs/_site
+bin/*
 
 ### C++ ###
 

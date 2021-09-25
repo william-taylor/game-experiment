@@ -12,7 +12,7 @@ mkdir build && cd build
 cmake ../
 
 # Build
-cmake --build . --target ALL_BUILD --config Debug
+cmake --build . --target all --config Debug
 
 # Install
 cmake --build . --target install --config Debug
