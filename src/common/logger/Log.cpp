@@ -1,6 +1,11 @@
 
 #include "Log.h"
 
+Log::Log()
+{
+
+}
+
 void Log::info(const char* msg)
 {
     spdlog::info(msg);

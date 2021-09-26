@@ -7,6 +7,7 @@
 Demo::Demo(DemoParams demoParams) :
         name(demoParams.name),
         render(demoParams.render),
+        unload(demoParams.unload),
         load(demoParams.load),
         exitEarly(false)
 {
@@ -22,31 +23,36 @@ void Demo::initialise()
 {
     initialiseGLFW();
     initialiseGLEW();
-
-    // NOTE: For loading assets in demo
-    load();
 }
 
 int Demo::run()
 {
     if (!exitEarly)
     {
+        load();
+
         while (!glfwWindowShouldClose(window))
         {
-            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            // TODO: Custom input callback
+            if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            {
+                Log::info("Escape key pressed, closing window");
+                glfwSetWindowShouldClose(window, true);
+            }
+
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            // NOTE: For rendering custom scene
             render();
 
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
 
+        unload();
     }
 
     glfwTerminate();
-
     return exitEarly ? EXIT_FAILURE : EXIT_SUCCESS;
 }
 
@@ -69,8 +75,11 @@ void Demo::initialiseGLFW()
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
     const auto title = name + " demo";
     Log::info("Window title will be set as: {}", title);
@@ -78,10 +87,17 @@ void Demo::initialiseGLFW()
 
     if (window == nullptr)
     {
-        Log::error("Failed to create window with OpenGL context");
+        Log::error("Failed to create triangle with OpenGL context");
         exitEarly = true;
         return;
     }
+
+    glfwMakeContextCurrent(window);
+
+    // TODO: Custom resize callback
+    glfwSetFramebufferSizeCallback(window, [](auto window, auto width, auto height) {
+        glViewport(0, 0, width, height);
+    });
 
     Log::info("Initialised GLFW successfully");
 }
@@ -96,14 +112,12 @@ void Demo::initialiseGLEW()
 
     const auto glewInitStatus = glewInit();
 
-    if (!glewInitStatus)
+    if (glewInitStatus != GLEW_OK)
     {
         Log::error("GLEW failed to initialise : {}", glewInitStatus);
         exitEarly = true;
         return;
     }
-
-    glfwMakeContextCurrent(window);
 
     const auto renderer = glGetString(GL_RENDERER);
     const auto version = glGetString(GL_VERSION);

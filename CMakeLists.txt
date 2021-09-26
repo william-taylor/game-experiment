@@ -11,4 +11,4 @@ conan_basic_setup()
 
 # Sub projects
 add_subdirectory(src/common)
-add_subdirectory(src/demo/window)
+add_subdirectory(src/demo/triangle)

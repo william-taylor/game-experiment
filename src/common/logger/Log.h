@@ -42,6 +42,8 @@ public:
     static void error(const char* msg);
     static void warn(const char* msg);
     static void debug(const char* msg);
+private:
+    Log();
 };
 
 

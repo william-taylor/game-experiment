@@ -2,6 +2,7 @@
 #ifndef _DEMO_H
 #define _DEMO_H
 
+#include "gl/glew.h"
 #include <functional>
 #include <string>
 
@@ -17,6 +18,7 @@ struct DemoParams
     const char** argv;
     std::function<void()> load;
     std::function<void()> render;
+    std::function<void()> unload;
 };
 
 /*!
@@ -28,6 +30,7 @@ private:
     std::string name;
     std::function<void()> load;
     std::function<void()> render;
+    std::function<void()> unload;
     GLFWwindow* window;
     bool exitEarly;
 public:
