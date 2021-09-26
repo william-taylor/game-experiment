@@ -7,7 +7,8 @@
 Demo::Demo(DemoParams demoParams) :
         name(demoParams.name),
         render(demoParams.render),
-        load(demoParams.load)
+        load(demoParams.load),
+        exitEarly(false)
 {
     Log::info("Starting {} demo", name);
 }
@@ -19,12 +20,6 @@ Demo::~Demo()
 
 void Demo::initialise()
 {
-    if (exitEarly)
-    {
-        Log::info("Skipping initialisation, exit early flag was set");
-        return;
-    }
-
     initialiseGLFW();
     initialiseGLEW();
 
@@ -77,7 +72,9 @@ void Demo::initialiseGLFW()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(720, 480, name, nullptr, nullptr);
+    const auto title = name + " demo";
+    Log::info("Window title will be set as: {}", title);
+    window = glfwCreateWindow(800, 500, title.c_str(), nullptr, nullptr);
 
     if (window == nullptr)
     {

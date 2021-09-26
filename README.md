@@ -11,8 +11,8 @@ mkdir build && cd build
 # Generate
 cmake ../
 
-# Build
-cmake --build . --target all --config Debug
+# Build 
+cmake --build . --target (ALL_BUILD|all) --config Debug
 
 # Install
 cmake --build . --target install --config Debug

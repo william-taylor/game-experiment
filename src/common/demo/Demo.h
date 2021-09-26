@@ -3,6 +3,7 @@
 #define _DEMO_H
 
 #include <functional>
+#include <string>
 
 class GLFWwindow;
 
@@ -24,11 +25,11 @@ struct DemoParams
 class Demo
 {
 private:
-    const char* name;
-    GLFWwindow* window;
-    bool exitEarly;
+    std::string name;
     std::function<void()> load;
     std::function<void()> render;
+    GLFWwindow* window;
+    bool exitEarly;
 public:
     Demo(DemoParams demoParams);
     Demo(const Demo& demo) = delete;
