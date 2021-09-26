@@ -2,11 +2,10 @@
 #ifndef _DEMO_H
 #define _DEMO_H
 
-#include "gl/glew.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <functional>
 #include <string>
-
-class GLFWwindow;
 
 /*!
  * @brief Data class params required for the demo class

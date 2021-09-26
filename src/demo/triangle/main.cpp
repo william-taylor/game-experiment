@@ -24,7 +24,7 @@ std::string read(const char* filename)
 
 void load(/* Toolbox& toolbox */)
 {
-    const auto vertexShaderSource = read("shaders/vertex2.glsl");
+    const auto vertexShaderSource = read("shaders/vertex.glsl");
     const auto vertexShaderSourceStr = vertexShaderSource.c_str();
     const auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSourceStr, NULL);
